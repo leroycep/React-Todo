@@ -38,8 +38,9 @@ button {
 }
 
 .App {
+  min-height: 80vh;
   max-width: 1000px;
-  margin: 0 auto;
+  margin: 1% auto;
   background: $color2;
   padding: 3%;
 }
