@@ -10,6 +10,8 @@ export default function TodoList(props) {
           todo={todo}
           toggleComplete={props.toggleComplete}
           deleteTodo={props.deleteTodo}
+          editTodo={props.editTodo}
+          updateTodo={props.updateTodo}
         />
       ))}
     </div>
