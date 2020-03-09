@@ -3,13 +3,15 @@ import TodoList from "./components/TodoList";
 import TodoForm from "./components/TodoForm";
 import "./styles.scss";
 
+const LOCAL_STORAGE_KEY = "todo-state";
+
 class App extends React.Component {
   // you will need a place to store your state in this component.
   // design `App` to be the parent component of your application.
   // this component is going to take care of state, and any change handlers you need to work with your state
   constructor() {
     super();
-    const storageState = localStorage.getItem("state");
+    const storageState = localStorage.getItem(LOCAL_STORAGE_KEY);
     console.log(storageState);
     if (storageState !== null) {
       this.state = JSON.parse(storageState);
@@ -31,8 +33,8 @@ class App extends React.Component {
     }
   }
 
-  toggleComplete = id => {
-    const newState = {
+  toggleComplete = id =>
+    this.setAndStore({
       todos: this.state.todos.map(todo => {
         if (todo.id === id) {
           return { ...todo, completed: !todo.completed };
@@ -40,13 +42,10 @@ class App extends React.Component {
           return todo;
         }
       })
-    };
-    this.setState(newState);
-    this.store(newState);
-  };
+    });
 
-  addTodo = task => {
-    const newState = {
+  addTodo = task =>
+    this.setAndStore({
       todos: [
         ...this.state.todos,
         {
@@ -55,21 +54,16 @@ class App extends React.Component {
           completed: false
         }
       ]
-    };
-    this.setState(newState);
-    this.store(newState);
-  };
+    });
 
-  clearCompleted = () => {
-    const newState = {
+  clearCompleted = () =>
+    this.setAndStore({
       todos: this.state.todos.filter(todo => !todo.completed)
-    };
-    this.setState(newState);
-    this.store(newState);
-  };
+    });
 
-  store = state => {
-    localStorage.setItem("state", JSON.stringify(state));
+  setAndStore = state => {
+    this.setState(state);
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(state));
   };
 
   render() {
