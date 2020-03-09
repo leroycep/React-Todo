@@ -6,7 +6,7 @@ export default function Todo(props) {
       className={props.todo.completed ? "task completed" : "task"}
       onClick={() => props.toggleComplete(props.todo.id)}
     >
-      {props.todo.task}
+      {props.todo.description}
     </div>
   );
 }

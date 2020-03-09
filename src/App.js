@@ -17,48 +17,68 @@ class App extends React.Component {
       this.state = JSON.parse(storageState);
     } else {
       this.state = {
-        todos: [
+        selectedProject: 0,
+        projects: [
           {
-            task: "Organize Garage",
-            id: 1528817077286,
-            completed: false
-          },
-          {
-            task: "Bake Cookies",
-            id: 1528817084358,
-            completed: true
+            id: 0,
+            name: "Cleaning",
+            tasks: [
+              { id: 32142512, description: "Wash clothes", checked: false }
+            ]
           }
         ]
       };
     }
   }
 
+  currentProject = () => {
+    return this.state.projects.filter(
+      project => project.id === this.state.selectedProject
+    )[0];
+  };
+
   toggleComplete = id =>
     this.setAndStore({
-      todos: this.state.todos.map(todo => {
-        if (todo.id === id) {
-          return { ...todo, completed: !todo.completed };
+      ...this.state,
+      projects: this.state.projects.map(project => {
+        if (project.id === this.state.selectedProject) {
+          return {
+            ...project,
+            tasks: project.tasks.map(todo => {
+              if (todo.id === id) {
+                return { ...todo, completed: !todo.completed };
+              } else {
+                return todo;
+              }
+            })
+          };
         } else {
-          return todo;
+          return project;
         }
       })
     });
 
-  addTodo = task =>
+  addTodo = description =>
     this.setAndStore({
-      todos: [
-        ...this.state.todos,
-        {
-          task,
-          id: Date.now(),
-          completed: false
+      ...this.state,
+      projects: this.state.projects.map(project => {
+        if (project.id === this.state.selectedProject) {
+          // Add task to project
+          return {
+            ...project,
+            tasks: [
+              ...project.tasks,
+              {
+                description,
+                id: Date.now(),
+                completed: false
+              }
+            ]
+          };
+        } else {
+          return project;
         }
-      ]
-    });
-
-  clearCompleted = () =>
-    this.setAndStore({
-      todos: this.state.todos.filter(todo => !todo.completed)
+      })
     });
 
   setAndStore = state => {
@@ -67,14 +87,12 @@ class App extends React.Component {
   };
 
   render() {
+    const project = this.currentProject();
     return (
       <div className="App">
         <h2>Welcome to your Todo App!</h2>
-        <TodoForm addTodo={this.addTodo} clearCompleted={this.clearCompleted} />
-        <TodoList
-          todos={this.state.todos}
-          toggleComplete={this.toggleComplete}
-        />
+        <TodoForm addTodo={this.addTodo} />
+        <TodoList todos={project.tasks} toggleComplete={this.toggleComplete} />
       </div>
     );
   }
