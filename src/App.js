@@ -46,15 +46,6 @@ class App extends React.Component {
       }))
     }));
 
-  editTodo = id =>
-    this.updateProject(this.state.selectedProject)(project => ({
-      ...project,
-      tasks: project.tasks.map(todo => ({
-        ...todo,
-        editing: todo.id === id
-      }))
-    }));
-
   updateTodo = (id, description) =>
     this.updateProject(this.state.selectedProject)(project => ({
       ...project,
@@ -62,8 +53,7 @@ class App extends React.Component {
         if (todo.id === id) {
           return {
             ...todo,
-            description,
-            editing: false
+            description
           };
         } else {
           return todo;
