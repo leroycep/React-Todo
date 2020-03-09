@@ -12,7 +12,7 @@ export default function TodoForm(props) {
     <form onSubmit={handleSubmit(onSubmit)}>
       <input type="text" name="task" ref={register} />
       <button>Add Task</button>
-      <button type="button" onClick={() => {}}>Clear Completed</button>
+      <button type="button" onClick={props.clearCompleted}>Clear Completed</button>
     </form>
   );
 }
