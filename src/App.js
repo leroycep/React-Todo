@@ -1,5 +1,6 @@
 import React from "react";
 import TodoList from "./components/TodoList";
+import TodoForm from "./components/TodoForm";
 
 class App extends React.Component {
   // you will need a place to store your state in this component.
@@ -32,6 +33,19 @@ class App extends React.Component {
     });
   };
 
+  addTodo = task => {
+    this.setState({
+      todos: [
+        ...this.state.todos,
+        {
+          task,
+          id: Date.now(),
+          completed: false
+        }
+      ]
+    });
+  };
+
   render() {
     return (
       <div>
@@ -40,6 +54,7 @@ class App extends React.Component {
           todos={this.state.todos}
           toggleComplete={this.toggleComplete}
         />
+        <TodoForm addTodo={this.addTodo} />
       </div>
     );
   }
