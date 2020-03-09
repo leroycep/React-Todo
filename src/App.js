@@ -7,23 +7,32 @@ class App extends React.Component {
   // you will need a place to store your state in this component.
   // design `App` to be the parent component of your application.
   // this component is going to take care of state, and any change handlers you need to work with your state
-  state = {
-    todos: [
-      {
-        task: "Organize Garage",
-        id: 1528817077286,
-        completed: false
-      },
-      {
-        task: "Bake Cookies",
-        id: 1528817084358,
-        completed: true
-      }
-    ]
-  };
+  constructor() {
+    super();
+    const storageState = localStorage.getItem("state");
+    console.log(storageState);
+    if (storageState !== null) {
+      this.state = JSON.parse(storageState);
+    } else {
+      this.state = {
+        todos: [
+          {
+            task: "Organize Garage",
+            id: 1528817077286,
+            completed: false
+          },
+          {
+            task: "Bake Cookies",
+            id: 1528817084358,
+            completed: true
+          }
+        ]
+      };
+    }
+  }
 
   toggleComplete = id => {
-    this.setState({
+    const newState = {
       todos: this.state.todos.map(todo => {
         if (todo.id === id) {
           return { ...todo, completed: !todo.completed };
@@ -31,11 +40,13 @@ class App extends React.Component {
           return todo;
         }
       })
-    });
+    };
+    this.setState(newState);
+    this.store(newState);
   };
 
   addTodo = task => {
-    this.setState({
+    const newState = {
       todos: [
         ...this.state.todos,
         {
@@ -44,13 +55,21 @@ class App extends React.Component {
           completed: false
         }
       ]
-    });
+    };
+    this.setState(newState);
+    this.store(newState);
   };
 
   clearCompleted = () => {
-    this.setState({
+    const newState = {
       todos: this.state.todos.filter(todo => !todo.completed)
-    });
+    };
+    this.setState(newState);
+    this.store(newState);
+  };
+
+  store = state => {
+    localStorage.setItem("state", JSON.stringify(state));
   };
 
   render() {
