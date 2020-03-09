@@ -8,7 +8,13 @@ export default function Todo(props) {
         checked={props.todo.checked}
         onChange={ev => props.toggleComplete(props.todo.id)}
       />
-      {props.todo.description}
+      <div className="description">{props.todo.description}</div>
+      <button onClick={e => {}} className="edit">
+        Edit
+      </button>
+      <button onClick={e => {}} className="delete">
+        Delete
+      </button>
     </div>
   );
 }
