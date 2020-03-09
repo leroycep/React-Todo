@@ -15,7 +15,7 @@ class App extends React.Component {
       {
         task: "Bake Cookies",
         id: 1528817084358,
-        completed: false
+        completed: true
       }
     ]
   };
