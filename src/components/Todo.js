@@ -12,7 +12,7 @@ export default function Todo(props) {
       <button onClick={e => {}} className="edit">
         Edit
       </button>
-      <button onClick={e => {}} className="delete">
+      <button onClick={e => props.deleteTodo(props.todo.id)} className="delete">
         Delete
       </button>
     </div>

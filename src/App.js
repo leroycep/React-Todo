@@ -60,6 +60,13 @@ class App extends React.Component {
     }));
   }
 
+  deleteTodo = id => {
+    this.updateProject(this.state.selectedProject)(project => ({
+      ...project,
+      tasks: project.tasks.filter(task => task.id !== id)
+    }));
+  }
+
   updateProject = projectId => callback =>
     this.setAndStore({
       ...this.state,
@@ -83,7 +90,7 @@ class App extends React.Component {
       <div className="App">
         <h2>Welcome to your Todo App!</h2>
         <TodoForm addTodo={this.addTodo} />
-        <TodoList todos={project.tasks} toggleComplete={this.toggleComplete} />
+        <TodoList todos={project.tasks} toggleComplete={this.toggleComplete} deleteTodo={this.deleteTodo} />
       </div>
     );
   }
