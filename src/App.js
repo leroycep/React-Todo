@@ -38,43 +38,34 @@ class App extends React.Component {
   };
 
   toggleComplete = id =>
-    this.setAndStore({
-      ...this.state,
-      projects: this.state.projects.map(project => {
-        if (project.id === this.state.selectedProject) {
-          return {
-            ...project,
-            tasks: project.tasks.map(todo => {
-              if (todo.id === id) {
-                return { ...todo, completed: !todo.completed };
-              } else {
-                return todo;
-              }
-            })
-          };
-        } else {
-          return project;
-        }
-      })
-    });
+    this.updateProject(this.state.selectedProject)(project => ({
+      ...project,
+      tasks: project.tasks.map(todo => ({
+        ...todo,
+        checked: todo.id === id ? !todo.checked : todo.checked
+      }))
+    }));
 
-  addTodo = description =>
+  addTodo = description => {
+    this.updateProject(this.state.selectedProject)(project => ({
+      ...project,
+      tasks: [
+        ...project.tasks,
+        {
+          description,
+          id: Date.now(),
+          checked: false
+        }
+      ]
+    }));
+  }
+
+  updateProject = projectId => callback =>
     this.setAndStore({
       ...this.state,
       projects: this.state.projects.map(project => {
-        if (project.id === this.state.selectedProject) {
-          // Add task to project
-          return {
-            ...project,
-            tasks: [
-              ...project.tasks,
-              {
-                description,
-                id: Date.now(),
-                completed: false
-              }
-            ]
-          };
+        if (project.id === projectId) {
+          return callback(project);
         } else {
           return project;
         }
