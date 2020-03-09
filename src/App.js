@@ -20,11 +20,26 @@ class App extends React.Component {
     ]
   };
 
+  toggleComplete = id => {
+    this.setState({
+      todos: this.state.todos.map(todo => {
+        if (todo.id === id) {
+          return { ...todo, completed: !todo.completed };
+        } else {
+          return todo;
+        }
+      })
+    });
+  };
+
   render() {
     return (
       <div>
         <h2>Welcome to your Todo App!</h2>
-        <TodoList todos={this.state.todos} />
+        <TodoList
+          todos={this.state.todos}
+          toggleComplete={this.toggleComplete}
+        />
       </div>
     );
   }
