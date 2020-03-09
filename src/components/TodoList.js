@@ -5,7 +5,7 @@ export default function TodoList(props) {
   return (
     <div>
       {props.todos.map(todo => (
-        <Todo todo={todo} toggleComplete={props.toggleComplete} />
+        <Todo key={todo.id} todo={todo} toggleComplete={props.toggleComplete} />
       ))}
     </div>
   );
