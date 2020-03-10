@@ -53,11 +53,18 @@ button {
     }
   }
 
+  &:hover {
+    background-color: $color3;
+    &.completed .description {
+      color: $color2;
+    }
+  }
+
   display: grid;
   grid-template-columns: auto 1fr auto auto;
   grid-column-gap: 3px;
   grid-template-areas: "checkbox description edit delete";
-  margin: 3px 0;
+  padding: 3px 0;
 
   input[type="checkbox"] {
     grid-area: checkbox;
