@@ -4,8 +4,15 @@ import { useForm } from "react-hook-form";
 export default function Todo(props) {
   const [editing, setEditing] = useState(props.todo.description === null);
 
+  const onSubmit = data => {
+    props.updateTodo(props.todo.id, data.description);
+    setEditing(false);
+  };
+
+  const cancelEdit = () => setEditing(false);
+
   if (editing) {
-    return <TodoEdit {...props} setEditing={setEditing} />;
+    return <TodoEdit {...props} onSubmit={onSubmit} onCancel={cancelEdit} />;
   }
 
   return (
@@ -32,20 +39,16 @@ export default function Todo(props) {
   );
 }
 
-function TodoEdit(props) {
-  const { register, handleSubmit, setValue } = useForm();
+export function TodoEdit(props) {
+  const { register, handleSubmit, setValue, reset } = useForm();
 
   const onSubmit = data => {
-    props.updateTodo(props.todo.id, data.description);
-    props.setEditing(false);
-  };
-
-  const cancelEdit = () => {
-    props.setEditing(false);
-  };
+      props.onSubmit(data);
+      reset();
+  }
 
   const onKeyDown = ev => {
-    if (ev.key === "Escape") cancelEdit();
+    if (ev.key === "Escape") props.onCancel();
   };
 
   useEffect(() => {
@@ -56,7 +59,7 @@ function TodoEdit(props) {
     <form
       className={props.todo.checked ? "task editing completed" : "task editing"}
       onSubmit={handleSubmit(onSubmit)}
-      onBlur={cancelEdit}
+      onBlur={props.onCancel}
       onKeyDown={onKeyDown}
     >
       <input
