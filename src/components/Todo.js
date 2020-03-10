@@ -40,6 +40,14 @@ function TodoEdit(props) {
     props.setEditing(false);
   };
 
+  const cancelEdit = () => {
+    props.setEditing(false);
+  };
+
+  const onKeyDown = ev => {
+    if (ev.key === "Escape") cancelEdit();
+  };
+
   useEffect(() => {
     setValue("description", props.todo.description);
   }, [props.todo.description]);
@@ -48,6 +56,8 @@ function TodoEdit(props) {
     <form
       className={props.todo.checked ? "task editing completed" : "task editing"}
       onSubmit={handleSubmit(onSubmit)}
+      onBlur={cancelEdit}
+      onKeyDown={onKeyDown}
     >
       <input
         type="checkbox"
