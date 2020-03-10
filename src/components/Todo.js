@@ -50,7 +50,7 @@ function TodoEdit(props) {
 
   useEffect(() => {
     setValue("description", props.todo.description);
-  }, [props.todo.description]);
+  }, [props.todo.description, setValue]);
 
   return (
     <form
