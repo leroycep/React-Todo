@@ -102,7 +102,7 @@ class App extends React.Component {
     const project = this.currentProject();
     return (
       <div className="App">
-        <h2>Welcome to your Todo App!</h2>
+        <h2>Project: {project.name}</h2>
         <TodoList
           todos={project.tasks}
           addTodo={this.addTodo}
