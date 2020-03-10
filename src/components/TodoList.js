@@ -13,6 +13,7 @@ export default function TodoList(props) {
           updateTodo={props.updateTodo}
         />
       ))}
+      <button onClick={ev => props.addTodo(null)}>Add Task</button>
     </div>
   );
 }

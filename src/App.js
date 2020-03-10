@@ -1,6 +1,5 @@
 import React from "react";
 import TodoList from "./components/TodoList";
-import TodoForm from "./components/TodoForm";
 import "./styles.scss";
 
 const LOCAL_STORAGE_KEY = "todo-state";
@@ -104,9 +103,9 @@ class App extends React.Component {
     return (
       <div className="App">
         <h2>Welcome to your Todo App!</h2>
-        <TodoForm addTodo={this.addTodo} />
         <TodoList
           todos={project.tasks}
+          addTodo={this.addTodo}
           toggleComplete={this.toggleComplete}
           deleteTodo={this.deleteTodo}
           editTodo={this.editTodo}

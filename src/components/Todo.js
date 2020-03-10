@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 export default function Todo(props) {
-  const [editing, setEditing] = useState(false);
+  const [editing, setEditing] = useState(props.todo.description === null);
 
   if (editing) {
     return <TodoEdit {...props} setEditing={setEditing} />;
