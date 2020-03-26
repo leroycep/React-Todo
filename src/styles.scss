@@ -47,7 +47,39 @@ button {
 
 .task {
   &.completed {
-    color: $color3;
-    text-decoration: line-through;
+    .description {
+      color: $color3;
+      text-decoration: line-through;
+    }
+  }
+
+  &:hover {
+    background-color: $color3;
+    &.completed .description {
+      color: $color2;
+    }
+  }
+
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  grid-column-gap: 3px;
+  grid-template-areas: "checkbox description edit delete";
+  padding: 3px 0;
+
+  input[type="checkbox"] {
+    grid-area: checkbox;
+  }
+
+  .description {
+    grid-area: description;
+    width: 100%;
+  }
+
+  .edit {
+    grid-area: edit;
+  }
+
+  .delete {
+    grid-area: delete;
   }
 }

@@ -1,66 +1,115 @@
 import React from "react";
 import TodoList from "./components/TodoList";
-import TodoForm from "./components/TodoForm";
 import "./styles.scss";
+
+const LOCAL_STORAGE_KEY = "todo-state";
 
 class App extends React.Component {
   // you will need a place to store your state in this component.
   // design `App` to be the parent component of your application.
   // this component is going to take care of state, and any change handlers you need to work with your state
-  state = {
-    todos: [
-      {
-        task: "Organize Garage",
-        id: 1528817077286,
-        completed: false
-      },
-      {
-        task: "Bake Cookies",
-        id: 1528817084358,
-        completed: true
-      }
-    ]
+  constructor() {
+    super();
+    const storageState = localStorage.getItem(LOCAL_STORAGE_KEY);
+    console.log(storageState);
+    if (storageState !== null) {
+      this.state = JSON.parse(storageState);
+    } else {
+      this.state = {
+        selectedProject: 0,
+        projects: [
+          {
+            id: 0,
+            name: "Cleaning",
+            tasks: [
+              { id: 32142512, description: "Wash clothes", checked: false }
+            ]
+          }
+        ]
+      };
+    }
+  }
+
+  currentProject = () => {
+    return this.state.projects.filter(
+      project => project.id === this.state.selectedProject
+    )[0];
   };
 
-  toggleComplete = id => {
-    this.setState({
-      todos: this.state.todos.map(todo => {
+  toggleComplete = id =>
+    this.updateProject(this.state.selectedProject)(project => ({
+      ...project,
+      tasks: project.tasks.map(todo => ({
+        ...todo,
+        checked: todo.id === id ? !todo.checked : todo.checked
+      }))
+    }));
+
+  updateTodo = (id, description) =>
+    this.updateProject(this.state.selectedProject)(project => ({
+      ...project,
+      tasks: project.tasks.map(todo => {
         if (todo.id === id) {
-          return { ...todo, completed: !todo.completed };
+          return {
+            ...todo,
+            description
+          };
         } else {
           return todo;
         }
       })
-    });
-  };
+    }));
 
-  addTodo = task => {
-    this.setState({
-      todos: [
-        ...this.state.todos,
+  addTodo = description => {
+    this.updateProject(this.state.selectedProject)(project => ({
+      ...project,
+      tasks: [
+        ...project.tasks,
         {
-          task,
+          description,
           id: Date.now(),
-          completed: false
+          checked: false
         }
       ]
-    });
+    }));
   };
 
-  clearCompleted = () => {
-    this.setState({
-      todos: this.state.todos.filter(todo => !todo.completed)
+  deleteTodo = id => {
+    this.updateProject(this.state.selectedProject)(project => ({
+      ...project,
+      tasks: project.tasks.filter(task => task.id !== id)
+    }));
+  };
+
+  updateProject = projectId => callback =>
+    this.setAndStore({
+      ...this.state,
+      projects: this.state.projects.map(project => {
+        if (project.id === projectId) {
+          return callback(project);
+        } else {
+          return project;
+        }
+      })
     });
+
+  setAndStore = state => {
+    this.setState(state);
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(state));
   };
 
   render() {
+    const project = this.currentProject();
     return (
       <div className="App">
-        <h2>Welcome to your Todo App!</h2>
-        <TodoForm addTodo={this.addTodo} clearCompleted={this.clearCompleted} />
+        <h2>Project: {project.name}</h2>
         <TodoList
-          todos={this.state.todos}
+          todos={project.tasks}
+          addTodo={this.addTodo}
           toggleComplete={this.toggleComplete}
+          deleteTodo={this.deleteTodo}
+          editTodo={this.editTodo}
+          updateTodo={this.updateTodo}
         />
       </div>
     );
