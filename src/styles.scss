@@ -1,0 +1,53 @@
+@import "./normalize.css";
+
+@import "./colors.scss";
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: $color1;
+  color: $color5;
+}
+
+form {
+  display: flex;
+}
+
+input[type="text"] {
+  flex-grow: 1;
+  background-color: $color5;
+  border: 1px solid $color2;
+  border-radius: 3px;
+  color: $color2;
+}
+
+button {
+  background-color: $color5;
+  color: $color2;
+  border: none;
+  border-radius: 3px;
+  font-weight: bold;
+
+  &:hover {
+    background-color: $color2;
+    color: $color5;
+    border: 1px solid $color5;
+  }
+}
+
+.App {
+  min-height: 80vh;
+  max-width: 1000px;
+  margin: 1% auto;
+  background: $color2;
+  padding: 3%;
+}
+
+.task {
+  &.completed {
+    color: $color3;
+    text-decoration: line-through;
+  }
+}
